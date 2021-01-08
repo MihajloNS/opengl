@@ -87,6 +87,7 @@ int main(void)
         glfwPollEvents();
     }
 
+    glDeleteProgram(shader);
     glfwTerminate();
 
     return EXIT_SUCCESS;
