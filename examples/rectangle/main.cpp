@@ -1,12 +1,41 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <cassert>
 #include <cstdlib>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <sstream>
+
+#define ASSERT(x) assert(x);
+
+#define GL_CALL(x) GLClearError();\
+    x;\
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+
+/**
+ * @brief Clear all OpengGL errors internally
+ */
+static void GLClearError()
+{
+    while (glGetError() != GL_NO_ERROR);
+}
+
+/**
+ * @brief Print OpegGL error
+ */
+static bool GLLogCall(const char* function, const char* file, int32_t line)
+{
+    while (GLenum error = glGetError())
+    {
+        std::cout << "[OpenGL error] (" << error << "): " << function <<
+            " " << file << ":" << line << std::endl;
+        return false;
+    }
+    return true;
+}
 
 /**
  * @brief Environment variable that represents shader file path.
@@ -102,7 +131,7 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Draw rectangle based on the index buffer
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
         // Swap front and back buffers
         glfwSwapBuffers(window);
