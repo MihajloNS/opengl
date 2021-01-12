@@ -10,7 +10,6 @@
 #include <sstream>
 
 #define ASSERT(x) assert(x);
-
 #define GL_CALL(x) GLClearError();\
     x;\
     ASSERT(GLLogCall(#x, __FILE__, __LINE__))
@@ -24,7 +23,7 @@ static void GLClearError()
 }
 
 /**
- * @brief Print OpegGL error
+ * @brief Print OpenGL error
  */
 static bool GLLogCall(const char* function, const char* file, int32_t line)
 {
